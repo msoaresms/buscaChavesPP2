@@ -70,7 +70,7 @@ public:
 
     void insere(T);
     void remove(int, T *);
-    No<T> *busca(int);
+    bool busca(int);
 
     void print();
 };
@@ -102,12 +102,15 @@ void Lista<T>::remove(int pChave, T *x) {
 }
 
 template <typename T>
-No<T> *Lista<T>::busca(int pChave) {
+bool Lista<T>::busca(int pChave) {
     No<T> *aux = this->prim->getProx();
-    while (aux != NULL && aux->getItem().getChave() != pChave){
+    while (aux != NULL){
+        if (aux->getItem() == pChave){
+            return true;
+        }
         aux = aux->getProx();
     }
-    return aux;
+    return false;
 }
 
 template <typename T>
@@ -142,7 +145,11 @@ void Hash<T>::insere(int pChave) {
 template <typename T>
 void Hash<T>::busca(int pChave) {
     Lista<T> *aux = tabela[pChave % TAM];
-    aux->print();
+    if (aux->busca(pChave)){
+        aux->print();
+    } else {
+        printf("Chave n%co encontrada.", 198);
+    }
 }
 //-----------------------------------
 int main() {
@@ -154,9 +161,9 @@ int main() {
     if (!arquivo){
         cout << "NUM PRESTOU" << endl;
     } else {
-        string line;
-        while (getline(arquivo, line)){
-            stringstream aux(line);
+        string chave;
+        while (arquivo >> chave){
+            stringstream aux(chave);
             int nAux;
             aux >> nAux;
             tabela.insere(nAux);
@@ -164,7 +171,7 @@ int main() {
     }
     arquivo.close();
 
-    tabela.busca(9808);
+    tabela.busca(1000);
 
     return 0;
 }
