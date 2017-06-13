@@ -2,7 +2,8 @@
 #include <fstream>
 #include <sstream>
 using namespace std;
-
+const int TAM = 787;
+//----------------------------------------------------------------------------------------------------------------------
 template <class T>
 class No{
 private:
@@ -22,7 +23,7 @@ public:
         this->prox = prox;
     }
 };
-
+//----------------------------------------------------------------------------------------------------------------------
 template <class T>
 class Lista{
 private:
@@ -36,6 +37,16 @@ private:
             aux = aux->getProx();
         }
         return aux;
+    }
+    bool repetido(T pChave){
+        No<T> * aux = this->prim->getProx();
+        while(aux != NULL){
+            if (aux->getItem() == pChave){
+                return true;
+            }
+            aux = aux->getProx();
+        }
+        return false;
     }
 public:
     Lista(){
@@ -60,35 +71,18 @@ public:
     void insere(T);
     void remove(int, T *);
     No<T> *busca(int);
-};
 
-template <class T>
-class Hash{
-private:
-    Lista<T> * tabela[15];
-public:
-    Hash(){
-        for (int i = 0; i < 15; i++){
-            this->tabela[i] = new Lista<T>();
-        }
-    }
-    void insere(int);
-    void remove();
-    void busca();
+    void print();
 };
-
-template <typename T>
-void Hash<T>::insere(int pChave) {
-    Lista<T> *aux = tabela[pChave % 15];
-    aux->insere(pChave);
-}
 
 template <typename T>
 void Lista<T>::insere(T pItem) {
-    this->ult->setProx(new No<T>());
-    this->ult = this->ult->getProx();
-    this->ult->setItem(pItem);
-    this->ult->setProx(NULL);
+    if (!repetido(pItem)) {
+        this->ult->setProx(new No<T>());
+        this->ult = this->ult->getProx();
+        this->ult->setItem(pItem);
+        this->ult->setProx(NULL);
+    }
 }
 
 template <typename T>
@@ -116,25 +110,61 @@ No<T> *Lista<T>::busca(int pChave) {
     return aux;
 }
 
+template <typename T>
+void Lista<T>::print() {
+    No<T> *aux = this->prim->getProx();
+    while (aux != NULL){
+        cout << aux->getItem() << " ";
+        aux = aux->getProx();
+    }
+}
+//----------------------------------------------------------------------------------------------------------------------
+template <class T>
+class Hash{
+private:
+    Lista<T> * tabela[TAM];
+public:
+    Hash(){
+        for (int i = 0; i < TAM; i++){
+            this->tabela[i] = new Lista<T>();
+        }
+    }
+    void insere(int);
+    void remove(int);
+    void busca(int);
+};
+
+template <typename T>
+void Hash<T>::insere(int pChave) {
+    Lista<T> *aux = tabela[pChave % TAM];
+    aux->insere(pChave);
+}
+template <typename T>
+void Hash<T>::busca(int pChave) {
+    Lista<T> *aux = tabela[pChave % TAM];
+    aux->print();
+}
+//-----------------------------------
 int main() {
-    //int chaves[15] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     Hash<int> tabela;
 
-    string line;
-    ifstream keys;
-    keys.open("chaves.txt");
+    ifstream arquivo;
+    arquivo.open("chaves.txt");
 
-    int i = 0;
-    while (!keys.eof()){
-        getline(keys, line);
-        stringstream aux(line);
-        int nAux;
-        aux >> nAux;
-        tabela.insere(nAux);
+    if (!arquivo){
+        cout << "NUM PRESTOU" << endl;
+    } else {
+        string line;
+        while (getline(arquivo, line)){
+            stringstream aux(line);
+            int nAux;
+            aux >> nAux;
+            tabela.insere(nAux);
+        }
     }
-    keys.close();
+    arquivo.close();
 
-
+    tabela.busca(9808);
 
     return 0;
 }
