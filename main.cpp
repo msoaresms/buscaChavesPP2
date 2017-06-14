@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 using namespace std;
 const int TAM = 787;
 //----------------------------------------------------------------------------------------------------------------------
@@ -151,27 +152,76 @@ void Hash<T>::busca(int pChave) {
         printf("Chave n%co encontrada.", 198);
     }
 }
-//-----------------------------------
-int main() {
-    Hash<int> tabela;
-
-    ifstream arquivo;
-    arquivo.open("chaves.txt");
-
-    if (!arquivo){
-        cout << "NUM PRESTOU" << endl;
-    } else {
-        string chave;
-        while (arquivo >> chave){
-            stringstream aux(chave);
-            int nAux;
-            aux >> nAux;
-            tabela.insere(nAux);
-        }
+//----------------------------------------------------------------------------------------------------------------------
+int tamanho(string pLinha) {
+    int i = 0;
+    while (pLinha[i] != '\0'){
+        i++;
     }
-    arquivo.close();
+    return i;
+}
+string consertar(string pLinha){
+    int tam = tamanho(pLinha);
+    if (tam == 3){
+        char c1 = pLinha[0];
+        char c2 = pLinha[1];
+        char c3 = pLinha[2];
+        pLinha = "0";
+        pLinha += c1;
+        pLinha += c2;
+        pLinha += c3;
+    } else if (tam == 2){
+        char c1 = pLinha[0];
+        char c2 = pLinha[1];
+        pLinha = "00";
+        pLinha += c1;
+        pLinha += c2;
+    } else if (tam == 1){
+        char c1 = pLinha[0];
+        pLinha = "000";
+        pLinha += c1;
+    }
+    return pLinha;
+}
+//----------------------------------------------------------------------------------------------------------------------
+int main() {
+//    Hash<int> tabela;
+//
+//    ifstream arquivo;
+//    arquivo.open("chaves.txt");
+//
+//    if (!arquivo){
+//        cout << "NUM PRESTOU" << endl;
+//    } else {
+//        string chave;
+//        while (arquivo >> chave){
+//            stringstream aux(chave);
+//            int nAux;
+//            aux >> nAux;
+//            tabela.insere(nAux);
+//        }
+//    }
+//    arquivo.close();
+//
+//    tabela.busca(1000);
 
-    tabela.busca(1000);
+//    string teste = "9808";
+//    int tam = tamanho(teste);
+//    int asc = 0;
+//    int j = 3;
+//    for ( int i = 0; i < tam; i++){
+//        int aux = teste[i];
+//        asc = asc + (aux * pow(128, j));
+//        j--;
+//    }
+//
+//    cout << asc;
+
+    string teste = "1";
+    teste = consertar(teste);
+
+    cout << teste;
+
 
     return 0;
 }
