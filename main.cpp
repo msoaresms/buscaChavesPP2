@@ -183,11 +183,8 @@ public:
 
 template <typename T>
 void Hash<T>::insere(char * pChave) {
-    //pChave = consertar(pChave);
     int vHash = valorHash(pChave);
-    //stringstream laux(pChave);
     int nAux = atoi(pChave);
-    //laux >> nAux;
     Lista<T> *aux = tabela[vHash];
     aux->insere(nAux);
 }
@@ -207,10 +204,13 @@ void Hash<T>::busca(string pChave) {
 //----------------------------------------------------------------------------------------------------------------------
 int main() {
     Hash<int> tabela;
+    string entrada = "";
+    string teste;
 
+
+    // Adiciona os valores a tabela hash
     ifstream arquivo;
     arquivo.open("chaves.txt");
-
     if (!arquivo){
         cout << "NUM PRESTOU" << endl;
     } else {
@@ -228,8 +228,11 @@ int main() {
         }
     }
     arquivo.close();
+    //----------------------------------
 
-    tabela.busca("9808");
+    getline(cin, entrada);
+    entrada = consertar(entrada);
+    tabela.busca(entrada);
 
     return 0;
 }
