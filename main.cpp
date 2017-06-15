@@ -178,7 +178,7 @@ public:
     }
     void insere(char *);
     void remove(int);
-    void busca(string);
+    void busca(char *);
 };
 
 template <typename T>
@@ -189,11 +189,9 @@ void Hash<T>::insere(char * pChave) {
     aux->insere(nAux);
 }
 template <typename T>
-void Hash<T>::busca(string pChave) {
+void Hash<T>::busca(char * pChave) {
     int vHash = valorHash(pChave);
-    stringstream laux(pChave);
-    int nAux;
-    laux >> nAux;
+    int nAux = atoi(pChave);
     Lista<T> *aux = tabela[vHash];
     if (aux->busca(nAux)){
         aux->print();
@@ -205,7 +203,9 @@ void Hash<T>::busca(string pChave) {
 int main() {
     Hash<int> tabela;
     string entrada = "";
+    char chave2[4];
     string teste;
+    string teste2;
 
 
     // Adiciona os valores a tabela hash
@@ -232,7 +232,11 @@ int main() {
 
     getline(cin, entrada);
     entrada = consertar(entrada);
-    tabela.busca(entrada);
+    chave2[0] = entrada[0];
+    chave2[1] = entrada[1];
+    chave2[2] = entrada[2];
+    chave2[3] = entrada[3];
+    tabela.busca(chave2);
 
     return 0;
 }
