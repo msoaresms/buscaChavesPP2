@@ -176,18 +176,18 @@ public:
             this->tabela[i] = new Lista<T>();
         }
     }
-    void insere(string);
+    void insere(char *);
     void remove(int);
     void busca(string);
 };
 
 template <typename T>
-void Hash<T>::insere(string pChave) {
-    pChave = consertar(pChave);
+void Hash<T>::insere(char * pChave) {
+    //pChave = consertar(pChave);
     int vHash = valorHash(pChave);
-    stringstream laux(pChave);
-    int nAux;
-    laux >> nAux;
+    //stringstream laux(pChave);
+    int nAux = atoi(pChave);
+    //laux >> nAux;
     Lista<T> *aux = tabela[vHash];
     aux->insere(nAux);
 }
@@ -214,8 +214,16 @@ int main() {
     if (!arquivo){
         cout << "NUM PRESTOU" << endl;
     } else {
-        string chave;
-        while (arquivo >> chave){
+        string aux;
+        char chave[4];
+        while (arquivo >> aux){
+            // Transforma a string em um vetor de caracteres puro para ser usado pela função atoi()
+            aux = consertar(aux);
+            chave[0] = aux[0];
+            chave[1] = aux[1];
+            chave[2] = aux[2];
+            chave[3] = aux[3];
+            //-------------------------------------------------------------------------------------
             tabela.insere(chave);
         }
     }
