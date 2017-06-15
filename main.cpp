@@ -197,7 +197,7 @@ template <typename T>
 void Lista<T>::print() {
     No<T> *aux = this->prim->getProx();
     while (aux != NULL){
-        cout << aux->getItem() << " ";
+        cout << aux->getItem().getValor() << " ";
         aux = aux->getProx();
     }
 }
@@ -214,7 +214,7 @@ public:
     }
     void insere(Item);
     //void remove(int);
-    //void busca(int);
+    void busca(char *);
 };
 
 template <typename T>
@@ -223,17 +223,19 @@ void Hash<T>::insere(Item pItem) {
     Lista<T> *aux = tabela[vHash];
     aux->insere(pItem);
 }
-//template <typename T>
-//void Hash<T>::busca(char * pChave) {
-//    int vHash = valorHash(pChave);
-//    int nAux = atoi(pChave);
-//    Lista<T> *aux = tabela[vHash];
-//    if (aux->busca(nAux)){
-//        aux->print();
-//    } else {
-//        printf("Chave n%co encontrada.", 198);
-//    }
-//}
+
+template <typename T>
+void Hash<T>::busca(char *pChave) {
+    int vHash = valorHash(pChave);
+    int nAux = atoi(pChave);
+    Lista<T> *aux = tabela[vHash];
+
+    if (aux->busca(nAux) == NULL){
+        printf("Chave n%co encontrada.", 198);
+    } else {
+        aux->print();
+    }
+}
 //----------------------------------------------------------------------------------------------------------------------
 int main() {
     Hash<Item> tabela;
@@ -260,10 +262,9 @@ int main() {
     arquivo.close();
     //----------------------------------
 
-//    getline(cin, entrada);
-//    stringParaChar(entrada, chave);
-
-    //tabela.busca(chave);
+    getline(cin, entrada);
+    stringParaChar(entrada, chave);
+    tabela.busca(chave);
 
     return 0;
 }
