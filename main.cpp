@@ -213,7 +213,7 @@ public:
         }
     }
     void insere(Item);
-    //void remove(int);
+    void remove(char *, T *);
     void busca(char *);
 };
 
@@ -234,6 +234,19 @@ void Hash<T>::busca(char *pChave) {
         printf("Chave n%co encontrada.", 198);
     } else {
         aux->print();
+    }
+}
+
+template <typename T>
+void Hash<T>::remove(char *pChave,  T * pItem) {
+    int vHash = valorHash(pChave);
+    int nAux = atoi(pChave);
+    Lista<T> *aux = tabela[vHash];
+
+    if (aux->busca(nAux) == NULL){
+        printf("Chave n%co encontrada.", 198);
+    } else {
+        aux->remove(nAux, pItem);
     }
 }
 //----------------------------------------------------------------------------------------------------------------------
