@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <math.h>
 using namespace std;
 const int TAM = 787;
@@ -46,6 +45,14 @@ int valorHash(string pLinha){
         j--;
     }
     return (hash % TAM);
+}
+void stringParaChar(string pLinha, char * chave){
+    pLinha = consertar(pLinha);
+    chave[0] = pLinha[0];
+    chave[1] = pLinha[1];
+    chave[2] = pLinha[2];
+    chave[3] = pLinha[3];
+    chave[4] = '\0';
 }
 //----------------------------------------------------------------------------------------------------------------------
 template <class T>
@@ -203,7 +210,7 @@ void Hash<T>::busca(char * pChave) {
 int main() {
     Hash<int> tabela;
     string entrada = "";
-    char chave2[4];
+    char chave[5];
     string teste;
     string teste2;
 
@@ -215,14 +222,9 @@ int main() {
         cout << "NUM PRESTOU" << endl;
     } else {
         string aux;
-        char chave[4];
         while (arquivo >> aux){
             // Transforma a string em um vetor de caracteres puro para ser usado pela função atoi()
-            aux = consertar(aux);
-            chave[0] = aux[0];
-            chave[1] = aux[1];
-            chave[2] = aux[2];
-            chave[3] = aux[3];
+            stringParaChar(aux, chave);
             //-------------------------------------------------------------------------------------
             tabela.insere(chave);
         }
@@ -231,12 +233,9 @@ int main() {
     //----------------------------------
 
     getline(cin, entrada);
-    entrada = consertar(entrada);
-    chave2[0] = entrada[0];
-    chave2[1] = entrada[1];
-    chave2[2] = entrada[2];
-    chave2[3] = entrada[3];
-    tabela.busca(chave2);
+    stringParaChar(entrada, chave);
+
+    tabela.busca(chave);
 
     return 0;
 }
