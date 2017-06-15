@@ -4,7 +4,6 @@
 using namespace std;
 const int TAM = 787;
 //----------------------------------------------------------------------------------------------------------------------
-//adiciona zeros as chaves com menos de 4 caracteres
 int tamanho(string pLinha) {
     int i = 0;
     while (pLinha[i] != '\0'){
@@ -12,6 +11,8 @@ int tamanho(string pLinha) {
     }
     return i;
 }
+
+// Adiciona zeros as chaves com menos de 4 caracteres
 string consertar(string pLinha){
     int tam = tamanho(pLinha);
     if (tam == 3){
@@ -35,7 +36,8 @@ string consertar(string pLinha){
     }
     return pLinha;
 }
-//calcula o valor de hash
+
+// Calcula o valor de hash
 int valorHash(string pLinha){
     int hash = 0;
     int j = 3;
@@ -46,6 +48,8 @@ int valorHash(string pLinha){
     }
     return (hash % TAM);
 }
+
+// Transforma a string em um vetor de caracteres puro para ser usado pela função atoi()
 void stringParaChar(string pLinha, char * chave){
     pLinha = consertar(pLinha);
     chave[0] = pLinha[0];
@@ -54,6 +58,31 @@ void stringParaChar(string pLinha, char * chave){
     chave[3] = pLinha[3];
     chave[4] = '\0';
 }
+//----------------------------------------------------------------------------------------------------------------------
+class Chave{
+private:
+    int chave;
+    string valor;
+public:
+    Chave(){};
+    Chave(int pChave, string pValor){
+        this->chave = pChave;
+        this->valor = pValor;
+    }
+
+    int getChave() const {
+        return chave;
+    }
+    void setChave(int chave) {
+        Chave::chave = chave;
+    }
+    const string &getValor() const {
+        return valor;
+    }
+    void setValor(const string &valor) {
+        Chave::valor = valor;
+    }
+};
 //----------------------------------------------------------------------------------------------------------------------
 template <class T>
 class No{
@@ -223,9 +252,7 @@ int main() {
     } else {
         string aux;
         while (arquivo >> aux){
-            // Transforma a string em um vetor de caracteres puro para ser usado pela função atoi()
             stringParaChar(aux, chave);
-            //-------------------------------------------------------------------------------------
             tabela.insere(chave);
         }
     }
