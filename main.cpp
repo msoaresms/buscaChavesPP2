@@ -59,13 +59,13 @@ void stringParaChar(string pLinha, char * chave){
     chave[4] = '\0';
 }
 //----------------------------------------------------------------------------------------------------------------------
-class Chave{
+class Item{
 private:
     int chave;
     string valor;
 public:
-    Chave(){};
-    Chave(int pChave, string pValor){
+    Item(){};
+    Item(int pChave, string pValor){
         this->chave = pChave;
         this->valor = pValor;
     }
@@ -74,13 +74,13 @@ public:
         return chave;
     }
     void setChave(int chave) {
-        Chave::chave = chave;
+        Item::chave = chave;
     }
     const string &getValor() const {
         return valor;
     }
     void setValor(const string &valor) {
-        Chave::valor = valor;
+        Item::valor = valor;
     }
 };
 //----------------------------------------------------------------------------------------------------------------------
@@ -118,10 +118,10 @@ private:
         }
         return aux;
     }
-    bool repetido(T pChave){
+    bool repetido(int pChave){
         No<T> * aux = this->prim->getProx();
         while(aux != NULL){
-            if (aux->getItem() == pChave){
+            if (aux->getItem().getChave() == pChave){
                 return true;
             }
             aux = aux->getProx();
@@ -150,19 +150,31 @@ public:
 
     void insere(T);
     void remove(int, T *);
-    bool busca(int);
+    No<T> * busca(int);
 
     void print();
 };
 
 template <typename T>
 void Lista<T>::insere(T pItem) {
-    if (!repetido(pItem)) {
+    if (!repetido(pItem.getChave())) {
         this->ult->setProx(new No<T>());
         this->ult = this->ult->getProx();
         this->ult->setItem(pItem);
         this->ult->setProx(NULL);
     }
+}
+
+template <typename T>
+No<T> * Lista<T>::busca(int pChave) {
+    No<T> *aux = this->prim->getProx();
+    while (aux != NULL){
+        if (aux->getItem().getChave() == pChave){
+            return aux;
+        }
+        aux = aux->getProx();
+    }
+    return NULL;
 }
 
 template <typename T>
@@ -179,18 +191,6 @@ void Lista<T>::remove(int pChave, T *x) {
             }
         }
     }
-}
-
-template <typename T>
-bool Lista<T>::busca(int pChave) {
-    No<T> *aux = this->prim->getProx();
-    while (aux != NULL){
-        if (aux->getItem() == pChave){
-            return true;
-        }
-        aux = aux->getProx();
-    }
-    return false;
 }
 
 template <typename T>
@@ -212,32 +212,31 @@ public:
             this->tabela[i] = new Lista<T>();
         }
     }
-    void insere(char *);
-    void remove(int);
-    void busca(char *);
+    void insere(Item);
+    //void remove(int);
+    //void busca(int);
 };
 
 template <typename T>
-void Hash<T>::insere(char * pChave) {
-    int vHash = valorHash(pChave);
-    int nAux = atoi(pChave);
+void Hash<T>::insere(Item pItem) {
+    int vHash = valorHash(pItem.getValor());
     Lista<T> *aux = tabela[vHash];
-    aux->insere(nAux);
+    aux->insere(pItem);
 }
-template <typename T>
-void Hash<T>::busca(char * pChave) {
-    int vHash = valorHash(pChave);
-    int nAux = atoi(pChave);
-    Lista<T> *aux = tabela[vHash];
-    if (aux->busca(nAux)){
-        aux->print();
-    } else {
-        printf("Chave n%co encontrada.", 198);
-    }
-}
+//template <typename T>
+//void Hash<T>::busca(char * pChave) {
+//    int vHash = valorHash(pChave);
+//    int nAux = atoi(pChave);
+//    Lista<T> *aux = tabela[vHash];
+//    if (aux->busca(nAux)){
+//        aux->print();
+//    } else {
+//        printf("Chave n%co encontrada.", 198);
+//    }
+//}
 //----------------------------------------------------------------------------------------------------------------------
 int main() {
-    Hash<int> tabela;
+    Hash<Item> tabela;
     string entrada = "";
     char chave[5];
     string teste;
@@ -253,16 +252,18 @@ int main() {
         string aux;
         while (arquivo >> aux){
             stringParaChar(aux, chave);
-            tabela.insere(chave);
+            int nAux = atoi(chave);
+            Item pItem(nAux, chave);
+            tabela.insere(pItem);
         }
     }
     arquivo.close();
     //----------------------------------
 
-    getline(cin, entrada);
-    stringParaChar(entrada, chave);
+//    getline(cin, entrada);
+//    stringParaChar(entrada, chave);
 
-    tabela.busca(chave);
+    //tabela.busca(chave);
 
     return 0;
 }
