@@ -142,17 +142,17 @@ public:
         this->ult = this->prim;
     }
 
-    No<T> *getFrente() const {
-        return prim;
+    No<T> *getFrente() {
+        return this->prim;
     }
-    void setFrente(No<T> *frente) {
-        Lista::prim = frente;
+    void setFrente(No<T> *pFrente) {
+        this->prim = pFrente;
     }
-    No<T> *getTras() const {
-        return ult;
+    No<T> *getTras() {
+        return this->ult;
     }
-    void setTras(No<T> *tras) {
-        Lista::ult = tras;
+    void setTras(No<T> *pTras) {
+        this->ult = pTras;
     }
 
     void insere(T);
