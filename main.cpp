@@ -97,17 +97,17 @@ private:
     T item;
     No<T> *prox;
 public:
-    const T &getItem() const {
-        return item;
+    T getItem() {
+        return this->item;
     }
-    void setItem(const T &item) {
-        this->item = item;
+    void setItem(T pItem) {
+        this->item = pItem;
     }
-    No<T> *getProx() const {
-        return prox;
+    No<T> *getProx() {
+        return this->prox;
     }
-    void setProx(No<T> *prox) {
-        this->prox = prox;
+    void setProx(No<T> *pProx) {
+        this->prox = pProx;
     }
 };
 //----------------------------------------------------------------------------------------------------------------------
