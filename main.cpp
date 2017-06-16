@@ -63,6 +63,7 @@ class Item{
 private:
     int chave;
     string valor;
+    bool impresso = false;
 public:
     Item(){};
     Item(int pChave, string pValor){
@@ -70,17 +71,23 @@ public:
         this->valor = pValor;
     }
 
-    int getChave() const {
-        return chave;
+    int getChave() {
+        return this->chave;
     }
-    void setChave(int chave) {
-        Item::chave = chave;
+    void setChave(int pChave) {
+        this->chave = pChave;
     }
-    const string &getValor() const {
-        return valor;
+    string getValor() {
+        return this->valor;
     }
-    void setValor(const string &valor) {
-        Item::valor = valor;
+    void setValor(string pValor) {
+        this->valor = pValor;
+    }
+    bool getImpresso(){
+        return this->impresso;
+    }
+    void setImpresso(bool pImpresso){
+        this->impresso = pImpresso;
     }
 };
 //----------------------------------------------------------------------------------------------------------------------
@@ -153,6 +160,7 @@ public:
     No<T> * busca(int);
 
     void print();
+    void printCrescente();
 };
 
 template <typename T>
@@ -200,6 +208,11 @@ void Lista<T>::print() {
         cout << aux->getItem().getValor() << " ";
         aux = aux->getProx();
     }
+}
+
+template <typename T>
+void Lista<T>::printCrescente() {
+
 }
 //----------------------------------------------------------------------------------------------------------------------
 template <class T>
