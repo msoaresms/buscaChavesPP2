@@ -210,10 +210,6 @@ void Lista<T>::print() {
     }
 }
 
-template <typename T>
-void Lista<T>::printCrescente() {
-
-}
 //----------------------------------------------------------------------------------------------------------------------
 template <class T>
 class Hash{
