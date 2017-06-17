@@ -128,16 +128,6 @@ private:
         }
         return false;
     }
-    bool todosImpressos(){
-        No<T> *aux = this->prim->getProx();
-        while (aux != NULL){
-            if (aux->getItem().getImpresso() == false){
-                return false;
-            }
-            aux - aux->getProx();
-        }
-        return true;
-    }
 public:
     Lista(){
         this->prim = new No<T>();
@@ -161,6 +151,7 @@ public:
     void insere(T);
     void remove(int, T *);
     No<T> * busca(int);
+    Lista<T> ordena();
 
     void print();
 };
@@ -212,6 +203,25 @@ void Lista<T>::print() {
     }
 }
 
+template <typename T>
+Lista<T> Lista<T>::ordena(){
+    Lista<T> lAux;
+    while(!this->vazia()){
+        T x;
+        No<T> *aux1 = this->prim->getProx();
+        No<T> *aux2 = this->prim->getProx();
+        while (aux1 != NULL){
+            if (aux1->getItem().getChave() < aux2->getItem().getChave()){
+                aux2 = aux1;
+            }
+            aux1 = aux1->getProx();
+        }
+        this->remove(aux2->getItem().getChave(), &x);
+        lAux.insere(x);
+    }
+    return lAux;
+}
+
 //----------------------------------------------------------------------------------------------------------------------
 template <class T>
 class Hash{
@@ -244,6 +254,7 @@ void Hash<T>::busca(char *pChave) {
     if (aux->busca(nAux) == NULL){
         printf("Chave n%co encontrada.", 198);
     } else {
+        *aux = aux->ordena();
         aux->print();
     }
 }
