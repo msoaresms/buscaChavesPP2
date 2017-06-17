@@ -63,7 +63,6 @@ class Item{
 private:
     int chave;
     string valor;
-    bool impresso = false;
 public:
     Item(){};
     Item(int pChave, string pValor){
@@ -82,12 +81,6 @@ public:
     }
     void setValor(string pValor) {
         this->valor = pValor;
-    }
-    bool getImpresso(){
-        return this->impresso;
-    }
-    void setImpresso(bool pImpresso){
-        this->impresso = pImpresso;
     }
 };
 //----------------------------------------------------------------------------------------------------------------------
@@ -135,6 +128,16 @@ private:
         }
         return false;
     }
+    bool todosImpressos(){
+        No<T> *aux = this->prim->getProx();
+        while (aux != NULL){
+            if (aux->getItem().getImpresso() == false){
+                return false;
+            }
+            aux - aux->getProx();
+        }
+        return true;
+    }
 public:
     Lista(){
         this->prim = new No<T>();
@@ -160,7 +163,6 @@ public:
     No<T> * busca(int);
 
     void print();
-    void printCrescente();
 };
 
 template <typename T>
