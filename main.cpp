@@ -1,6 +1,6 @@
 #include <iostream>
+#include <cstdlib>
 #include <fstream>
-#include <math.h>  // necessária para o uso da função pow na hora de calcular o hash
 using namespace std;
 const int TAM = 787;
 
@@ -48,7 +48,11 @@ int valorHash(string pLinha) {
     int j = 3;
     for (int i = 0; i < 4; i++) {
         int aux = pLinha[i];
-        hash = hash + (aux * pow(128, j));
+        int pow = 1;
+        for (int n = 1; n <= j; n++ ){
+            pow = pow * 128;
+        }
+        hash = hash + (aux * pow);
         j--;
     }
 
@@ -261,7 +265,7 @@ int main() {
     ifstream arquivo;
     arquivo.open("chaves.txt");
     if (!arquivo){
-        cout << "NUM PRESTOU" << endl;
+        cout << "FALHA" << endl;
     } else {
         string aux;
         while (arquivo >> aux){
