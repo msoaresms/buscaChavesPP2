@@ -260,13 +260,15 @@ int main() {
     Hash<Item> tabela;
     string entrada = "";
     char chave[5];
+    bool arquivoLido = false;
 
     // Adiciona os valores a tabela hash
     ifstream arquivo;
     arquivo.open("chaves.txt");
     if (!arquivo){
-        cout << "FALHA" << endl;
+        cout << "FALHA AO LER O ARQUIVO" << endl;
     } else {
+        arquivoLido = true;
         string aux;
         while (arquivo >> aux){
             stringParaChar(aux, chave);
@@ -277,10 +279,11 @@ int main() {
     }
     arquivo.close();
     //----------------------------------
-
-    getline(cin, entrada);
-    stringParaChar(entrada, chave);
-    tabela.busca(chave);
+    if (arquivoLido) {
+        getline(cin, entrada);
+        stringParaChar(entrada, chave);
+        tabela.busca(chave);
+    }
 
     return 0;
 }
