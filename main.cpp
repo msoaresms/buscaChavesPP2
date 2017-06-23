@@ -1,16 +1,18 @@
+// Matheus Soares da Silva - 1415080167
+// Matheus Obando da Silva - 1515080143
+// Luiz Henrique Barros de Souza - 1515080172
+
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
 using namespace std;
 const int TAM = 787;
+//----------------------------------------------------------------------------------
 
 // Calcula o tamanho das strings
 int tamanho(string pLinha) {
     int i = 0;
-    while (pLinha[i] != '\0') {
-        i++;
-    }
-
+    while (pLinha[i] != '\0') { i++; }
     return i;
 }
 
@@ -49,9 +51,9 @@ int valorHash(string pLinha) {
     for (int i = 0; i < 4; i++) {
         int aux = pLinha[i];
         int pow = 1;
-        for (int n = 1; n <= j; n++ ){
-            pow = pow * 128;
-        }
+
+        for (int n = 1; n <= j; n++ ) { pow = pow * 128; }
+
         hash = hash + (aux * pow);
         j--;
     }
@@ -59,7 +61,7 @@ int valorHash(string pLinha) {
     return (hash % TAM);
 }
 
-// Transforma a string em um vetor de caracteres puro para ser usado pela função atoi()
+// Transforma a string em um vetor de caracteres para ser usado pela função atoi()
 void stringParaChar(string pLinha, char * chave) {
     pLinha = consertar(pLinha);
     chave[0] = pLinha[0];
@@ -69,12 +71,13 @@ void stringParaChar(string pLinha, char * chave) {
     chave[4] = '\0';
 }
 
+//----------------------------------------------------------------------------------
 class Item {
 private:
     int chave;
     string valor;
 public:
-    Item() {};
+    Item() {}
     Item(int pChave, string pValor) {
         this->chave = pChave;
         this->valor = pValor;
@@ -86,6 +89,7 @@ public:
     void setValor(string pValor) { this->valor = pValor; }
 };
 
+//----------------------------------------------------------------------------------
 template <class T>
 class No {
 private:
@@ -98,29 +102,29 @@ public:
     void setProx(No<T> * pProx) { this->prox = pProx; }
 };
 
+//----------------------------------------------------------------------------------
 template <class T>
 class Lista {
 private:
     No<T> * prim, * ult;
+
     bool vazia() { return (this->prim == this->ult); }
+
     No<T> * predecessor(No<T> * no) {
         No<T> * aux = this->prim;
-        while (aux->getProx() != no) {
-            aux = aux->getProx();
-        }
-
+        while (aux->getProx() != no) { aux = aux->getProx(); }
         return aux;
     }
+
     bool repetido(int pChave) {
         No<T> * aux = this->prim->getProx();
         while(aux != NULL){
-            if (aux->getItem().getChave() == pChave) {
-                return true;
-            }
+            if (aux->getItem().getChave() == pChave) { return true; }
             aux = aux->getProx();
         }
         return false;
     }
+
 public:
     Lista() {
         this->prim = new No<T>();
@@ -140,21 +144,22 @@ public:
     void print();
 };
 
+//----------------------------------------------------------------------------------
 template <class T>
 class Hash {
 private:
     Lista<T> * tabela[TAM];
 public:
     Hash() {
-        for (int i = 0; i < TAM; i++) {
-            this->tabela[i] = new Lista<T>();
-        }
+        for (int i = 0; i < TAM; i++) { this->tabela[i] = new Lista<T>(); }
     }
+
     void insere(Item);
     void remove(char *, T *);
     void busca(char *);
 };
 
+//----------------------------------------------------------------------------------
 template <typename T>
 void Lista<T>::insere(T pItem) {
     if (!repetido(pItem.getChave())) {
@@ -211,9 +216,7 @@ Lista<T> Lista<T>::ordena() {
         No<T> * aux1 = this->prim->getProx();
         No<T> * aux2 = this->prim->getProx();
         while (aux1 != NULL) {
-            if (aux1->getItem().getChave() < aux2->getItem().getChave()){
-                aux2 = aux1;
-            }
+            if (aux1->getItem().getChave() < aux2->getItem().getChave()){ aux2 = aux1; }
             aux1 = aux1->getProx();
         }
         this->remove(aux2->getItem().getChave(), &x);
@@ -222,6 +225,7 @@ Lista<T> Lista<T>::ordena() {
     return lAux;
 }
 
+//----------------------------------------------------------------------------------
 template <typename T>
 void Hash<T>::insere(Item pItem) {
     int vHash = valorHash(pItem.getValor());
@@ -236,7 +240,7 @@ void Hash<T>::busca(char * pChave) {
     Lista<T> * aux = tabela[vHash];
 
     if (aux->busca(nAux) == NULL) {
-        printf("Chave n%co encontrada.", 198);
+        cout << "Chave não encontrada.";
     } else {
         * aux = aux->ordena();
         aux->print();
@@ -250,27 +254,28 @@ void Hash<T>::remove(char * pChave,  T * pItem) {
     Lista<T> * aux = tabela[vHash];
 
     if (aux->busca(nAux) == NULL) {
-        printf("Chave n%co encontrada.", 198);
+        cout << "Chave não encontrada.";
     } else {
         aux->remove(nAux, pItem);
     }
 }
-//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------
 int main() {
     Hash<Item> tabela;
-    string entrada = "";
-    char chave[5];
-    bool arquivoLido = false;
+
+    string entrada = "";      // Guarda a chave lida da entrada
+    char chave[5];            // Guarda a string transformada em vetor de caracteres
+    bool arquivoLido = false; // Impede a execução do programa caso um arquivo de chaves não seja lido
 
     // Adiciona os valores a tabela hash
     ifstream arquivo;
     arquivo.open("chaves.txt");
-    if (!arquivo){
+    if (!arquivo) {
         cout << "FALHA AO LER O ARQUIVO" << endl;
     } else {
         arquivoLido = true;
         string aux;
-        while (arquivo >> aux){
+        while (arquivo >> aux) {
             stringParaChar(aux, chave);
             int nAux = atoi(chave);
             Item pItem(nAux, chave);
@@ -279,6 +284,7 @@ int main() {
     }
     arquivo.close();
     //----------------------------------
+
     if (arquivoLido) {
         getline(cin, entrada);
         stringParaChar(entrada, chave);
