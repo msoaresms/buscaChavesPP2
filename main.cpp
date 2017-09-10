@@ -1,7 +1,3 @@
-// Matheus Soares da Silva - 1415080167
-// Matheus Obando da Silva - 1515080143
-// Luiz Henrique Barros de Souza - 1515080172
-
 #include <iostream>
 #include <cstdlib>
 #include <fstream>
